@@ -1,5 +1,5 @@
 import datetime
-from Classses import Member
+from Classses import Member, Duty
 from openpyxl import Workbook, load_workbook
 
 
@@ -34,7 +34,7 @@ def init_excel():
     print('A' + str(i))
 
 
-def input_members():
+def init_members():
     with open(r'C:\python_ws\ITPOTENTIAL\EXTRA\members.txt', 'r', encoding='utf-8') as f:
         members = []
         str_member = f.readline()
@@ -58,6 +58,20 @@ def input_members():
         print(member.str())
     print("---------------------------------------------------------------")
 
+'''def init_duties:
+    with open(r'C:\python_ws\ITPOTENTIAL\EXTRA\duties.txt', 'r', encoding='utf-8') as f:
+        duties = []
+        str_duty = f.readline()
+        while str_duty != '' and str_duty != '\n':
+            str_duty = str_duty.rsplit(" - ")
+            name = str_duty[0]
+            count = str_duty[1]
+            duties.append(Duty(name, count))
+            str_duty = f.readline()
+
+    for duty in duties:
+        print(duty.str())
+    print("---------------------------------------------------------------")'''
 
 def main():
     init_excel()

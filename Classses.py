@@ -1,12 +1,25 @@
 import datetime
 
+'''def diff_month(d1, d2):
+    return (d1.year - d2.year) * 12 + d1.month - d2.month'''
 
-def diff_month(d1, d2):
-    return (d1.year - d2.year) * 12 + d1.month - d2.month
+
+class Duty:
+
+    def __init__(self, name, count):
+        self.__name = name
+        self.__count = count
+
+
+class DutyWeek:
+
+    def __init__(self, member, duty_name, date):
+        self.__member = member
+        self.__duty_name = duty_name
+        self.__date = date
 
 
 class Member:
-
     # status
     baby = 1
     technician = 2
@@ -21,14 +34,13 @@ class Member:
     daily = 5
     weekly = 6
 
-    def __init__(self, name, status, kind, departures):
+    def __init__(self, name, status, kind, departures, duties):
         self.__name = name
         self.__status = status
         self.__kind = kind
-        '''self.__date_enlistment = date_enlistment
-        self.__date_discharge += datetime.relativedelta(months=kind)'''
         self.__departures = departures
         self.__count_shift = 0
+        self.__duties = duties[:]
 
     def get_status(self):
         if self.__status == self.baby:
