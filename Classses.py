@@ -6,17 +6,17 @@ import datetime
 
 class Duty:
 
+    __i = 13
+
     def __init__(self, name, count):
         self.__name = name
         self.__count = count
+        self.__loc = self.__i
+        self.__i += 1
 
-
-class DutyWeek:
-
-    def __init__(self, member, duty_name, date):
-        self.__member = member
-        self.__duty_name = duty_name
-        self.__date = date
+    def str(self):
+        txt = "name: " + self.__name + ", count: " + self.__count
+        return txt
 
 
 class Member:
@@ -34,13 +34,12 @@ class Member:
     daily = 5
     weekly = 6
 
-    def __init__(self, name, status, kind, departures, duties):
+    def __init__(self, name, status, kind, departures):
         self.__name = name
         self.__status = status
         self.__kind = kind
         self.__departures = departures
         self.__count_shift = 0
-        self.__duties = duties[:]
 
     def get_status(self):
         if self.__status == self.baby:
@@ -59,8 +58,6 @@ class Member:
         return "יומיות" if self.__departures == self.daily else "חמשושים"
 
     def str(self):
-        a = self.get_status()
-        b = self.get_departures()
         txt = "name: " + self.__name + ", kind: " + self.get_kind()
-        txt += ", status: " + a + ", departures: " + b
+        txt += ", status: " + self.get_status() + ", departures: " + self.get_departures()
         return txt

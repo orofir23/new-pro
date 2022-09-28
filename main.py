@@ -1,7 +1,14 @@
 import datetime
+
 from Classses import Member, Duty
 from openpyxl import Workbook, load_workbook
 
+
+def is_duty_exist(duties, name):
+    for duty in duties:
+        if name == duty:
+            return True
+    return False
 
 def start_day():
     week = int(input("לאיזה שבוע תרצה להכין את הפוטנציאל -->  "))
@@ -16,27 +23,42 @@ def end_day(week):
     return end.date()
 
 
-def init_excel():
+def init_excel(members, duties):
     days = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"]
-    wb = load_workbook(r'C:\python_ws\ITPOTENTIAL\EXTRA\‏‏‏‏potential - copy.xlsx')
-    ws = wb['פוטנציאל שבועי מאסטר']
+    # path = r'C:\python_ws\ITPOTENTIAL\EXTRA\‏‏‏‏potential - copy.xlsx'
+    path = r'C:\Users\SA\PycharmProjects\new-pro\EXTRA\‏‏‏‏potential - copy.xlsx'
+    wb = load_workbook(path)
+    ws_weekly = wb['פוטנציאל שבועי מאסטר']
     date = start_day()
     for i in range(7):
         cell = chr(ord('I') + i) + '12'
         print((date + datetime.timedelta(days=i)).strftime("%d.%m"))
-        ws[cell].value = (date + datetime.timedelta(days=i)).strftime("%d.%m") + " " + days[i]
-    wb.save(r'C:\python_ws\ITPOTENTIAL\EXTRA\‏‏‏‏potential - copy.xlsx')
+        ws_weekly[cell].value = (date + datetime.timedelta(days=i)).strftime("%d.%m") + " " + days[i]
+    wb.save(path)
 
-    ws = wb['פוטנציאל 2022']
-    i = 3
-    while ws['A' + str(i)].value.date() != date:
-        i += 1
-    print('A' + str(i))
+    ws_yearly = wb['פוטנציאל 2022']
+    ver_char = 3
+    while ws_yearly['A' + str(ver_char)].value.date() != date:
+        ver_char += 1
+    print('A' + str(ver_char))
+
+    hor_char = 'D'
+    for member in members:
+        hor_char = chr(ord(hor_char) + 1)
+        for i in range(7):
+            duty_name = ws_yearly[hor_char + str(ver_char + i)].value
+            if duty_name != "" and is_duty_exist(duties, duty_name):
+                ws_weekly['H' + ]
 
 
-def init_members():
-    with open(r'C:\python_ws\ITPOTENTIAL\EXTRA\members.txt', 'r', encoding='utf-8') as f:
-        members = []
+
+
+
+
+def init_members(members):
+    # path = r'C:\python_ws\ITPOTENTIAL\EXTRA\members.txt'
+    path = r'C:\Users\SA\PycharmProjects\new-pro\EXTRA\members.txt'
+    with open(path, 'r', encoding='utf-8') as f:
         str_member = f.readline()
         while str_member != '' and str_member != '\n':
             str_member = str_member.rsplit(",")
@@ -58,9 +80,11 @@ def init_members():
         print(member.str())
     print("---------------------------------------------------------------")
 
-'''def init_duties:
-    with open(r'C:\python_ws\ITPOTENTIAL\EXTRA\duties.txt', 'r', encoding='utf-8') as f:
-        duties = []
+
+def init_duties(duties):
+    # path = r'C:\python_ws\ITPOTENTIAL\EXTRA\duties.txt'
+    path = r'C:\Users\SA\PycharmProjects\new-pro\EXTRA\duties.txt'
+    with open(path, 'r', encoding='utf-8') as f:
         str_duty = f.readline()
         while str_duty != '' and str_duty != '\n':
             str_duty = str_duty.rsplit(" - ")
@@ -71,10 +95,15 @@ def init_members():
 
     for duty in duties:
         print(duty.str())
-    print("---------------------------------------------------------------")'''
+    print("---------------------------------------------------------------")
+
 
 def main():
-    init_excel()
+    duties = []
+    init_duties(duties)
+    members = []
+    init_members(members)
+    init_excel(members, duties)
 
 
 if __name__ == "__main__":
