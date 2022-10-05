@@ -8,14 +8,16 @@ class Duty:
 
     __i = 13
 
-    def __init__(self, name, count):
+    def __init__(self, name, count, loc):
         self.__name = name
         self.__count = count
-        self.__loc = self.__i
-        self.__i += 1
+        self.__loc = loc
+
+    def get_loc(self):
+        return self.__loc
 
     def str(self):
-        txt = "name: " + self.__name + ", count: " + self.__count
+        txt = "name: " + self.__name + ", count: " + self.__count + ", loc : " + str(self.__loc)
         return txt
 
 

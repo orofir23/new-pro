@@ -1,5 +1,4 @@
 import datetime
-
 from Classses import Member, Duty
 from openpyxl import Workbook, load_workbook
 
@@ -7,8 +6,9 @@ from openpyxl import Workbook, load_workbook
 def is_duty_exist(duties, name):
     for duty in duties:
         if name == duty:
-            return True
-    return False
+            return duty.get_loc()
+    return -1
+
 
 def start_day():
     week = int(input("לאיזה שבוע תרצה להכין את הפוטנציאל -->  "))
@@ -25,8 +25,7 @@ def end_day(week):
 
 def init_excel(members, duties):
     days = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"]
-    # path = r'C:\python_ws\ITPOTENTIAL\EXTRA\‏‏‏‏potential - copy.xlsx'
-    path = r'C:\Users\SA\PycharmProjects\new-pro\EXTRA\‏‏‏‏potential - copy.xlsx'
+    path = r'EXTRA\‏‏‏‏potential - copy.xlsx'
     wb = load_workbook(path)
     ws_weekly = wb['פוטנציאל שבועי מאסטר']
     date = start_day()
@@ -47,17 +46,13 @@ def init_excel(members, duties):
         hor_char = chr(ord(hor_char) + 1)
         for i in range(7):
             duty_name = ws_yearly[hor_char + str(ver_char + i)].value
-            if duty_name != "" and is_duty_exist(duties, duty_name):
-                ws_weekly['H' + ]
-
-
-
-
+            loc = is_duty_exist(duties, duty_name)
+            if duty_name != "" and loc != -1:
+                ws_weekly['H' + loc] =
 
 
 def init_members(members):
-    # path = r'C:\python_ws\ITPOTENTIAL\EXTRA\members.txt'
-    path = r'C:\Users\SA\PycharmProjects\new-pro\EXTRA\members.txt'
+    path = r'EXTRA\members.txt'
     with open(path, 'r', encoding='utf-8') as f:
         str_member = f.readline()
         while str_member != '' and str_member != '\n':
@@ -82,15 +77,16 @@ def init_members(members):
 
 
 def init_duties(duties):
-    # path = r'C:\python_ws\ITPOTENTIAL\EXTRA\duties.txt'
-    path = r'C:\Users\SA\PycharmProjects\new-pro\EXTRA\duties.txt'
+    path = r'EXTRA\duties.txt'
     with open(path, 'r', encoding='utf-8') as f:
         str_duty = f.readline()
+        loc = 0
         while str_duty != '' and str_duty != '\n':
             str_duty = str_duty.rsplit(" - ")
             name = str_duty[0]
             count = str_duty[1]
-            duties.append(Duty(name, count))
+            duties.append(Duty(name, count, loc))
+            loc += 1
             str_duty = f.readline()
 
     for duty in duties:
